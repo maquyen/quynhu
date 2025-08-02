@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Rin</title>
+    <style>
+      body {
+        margin: 0;
+        background: linear-gradient(to bottom right, #d48eaa, #ffc0cb);
+        overflow: hidden;
+        height: 100vh;
+        font-family: sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .heart-container {
+        position: relative;
+        width: 200px;
+        height: 180px;
+        animation: pulse 1.5s infinite;
+      }
+
+      .heart {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+        background: #ff6ab5;
+      }
+
+      .heart::before,
+      .heart::after {
+        content: "";
+        width: 100px;
+        height: 100px;
+        background: #ff69b4;
+        border-radius: 50%;
+        position: absolute;
+      }
+
+      .heart::before {
+        top: -50px;
+        left: 0;
+      }
+
+      .heart::after {
+        left: 50px;
+        top: 0;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+
+      input[type="text"] {
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 8px 0.1px;
+        border-radius: 90px;
+        border: none;
+        font-size: 16px;
+        text-align: center;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .floating-heart {
+        position: fixed;
+        width: 20px;
+        height: 20px;
+        background: pink;
+        transform: rotate(-45deg);
+        opacity: 0.7;
+        z-index: 0;
+      }
+
+      .floating-heart::before,
+      .floating-heart::after {
+        content: "";
+        width: 20px;
+        height: 20px;
+        background: pink;
+        border-radius: 50%;
+        position: absolute;
+      }
+
+      .floating-heart::before {
+        top: -10px;
+        left: 0;
+      }
+
+      .floating-heart::after {
+        left: 10px;
+        top: 0;
+      }
+
+      @keyframes fly {
+        0% {
+          transform: translate(0, 0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(var(--x), var(--y)) scale(0.5);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="heart-container">
+      <div class="heart"></div>
+      <input type="text" value="Quỳnh Như" />
+    </div>
+
+    <script>
+      function createFloatingHeart() {
+        const heart = document.createElement("div");
+        heart.className = "floating-heart";
+
+        const size = Math.random() * 20 + 10; // 10px - 30px
+        heart.style.width = size + "px";
+        heart.style.height = size + "px";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.top = Math.random() * window.innerHeight + "px";
+
+        // Tạo tọa độ bay ngẫu nhiên
+        const x = (Math.random() - 0.5) * 200 + "px"; // ngang
+        const y = (Math.random() - 1) * 300 + "px"; // bay lên
+
+        heart.style.setProperty("--x", x);
+        heart.style.setProperty("--y", y);
+
+        const duration = Math.random() * 5 + 3; // 3s - 8s
+        heart.style.animation = `fly ${duration}s ease-in-out forwards`;
+
+        document.body.appendChild(heart);
+
+        // Xóa trái tim sau khi bay xong
+        setTimeout(() => {
+          heart.remove();
+        }, duration * 1000);
+      }
+
+      // Tạo nhiều trái tim theo thời gian
+      setInterval(createFloatingHeart, 100);
+      // Trái tim nhỏ bay lung tung
+      function createFloatingHeart() {
+        const heart = document.createElement("div");
+        heart.className = "floating-heart";
+
+        const size = Math.random() * 20 + 10;
+        heart.style.width = size + "px";
+        heart.style.height = size + "px";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.top = Math.random() * window.innerHeight + "px";
+
+        const x = (Math.random() - 0.5) * 200 + "px";
+        const y = (Math.random() - 1) * 300 + "px";
+
+        heart.style.setProperty("--x", x);
+        heart.style.setProperty("--y", y);
+
+        const duration = Math.random() * 5 + 3;
+        heart.style.animation = `fly ${duration}s ease-in-out forwards`;
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), duration * 1000);
+      }
+
+      setInterval(createFloatingHeart, 200);
+
+      // Tạo các chữ tỏa đều quanh trái tim
+      const orbit = document.getElementById("orbitText");
+      const words = ["Như", "Như", "Như", "💖", "✨"];
+      const total = words.length;
+
+      words.forEach((word, i) => {
+        const span = document.createElement("span");
+        const angle = (360 / total) * i;
+        span.textContent = word;
+        span.style.transform = `rotate(${angle}deg) translate(0, -140px) rotate(-${angle}deg)`;
+        orbit.appendChild(span);
+      });
+    </script>
+  </body>
+</html>
